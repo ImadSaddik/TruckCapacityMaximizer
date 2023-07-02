@@ -1,4 +1,5 @@
 from pulp import *
+from tabulate import tabulate
 
 
 class Solver():
@@ -105,3 +106,16 @@ class Solver():
 
         table = sorted(table, key=lambda x: x[-1], reverse=True)
         return {row[0]: row[1:] for row in table}
+    
+    
+    def pretifySolution(self, solution):
+        pretifiedSolution = []
+        for truck, values in solution.items():
+            values.insert(0, truck)
+            pretifiedSolution.append(values)
+
+        headers = ['Truck']
+        headers.extend(iter(self.getProductNames()))
+        headers.append('Capacity %')
+
+        return tabulate(pretifiedSolution, headers=headers, floatfmt=".2f")

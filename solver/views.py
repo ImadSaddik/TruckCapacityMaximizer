@@ -163,8 +163,8 @@ def getFillRateBarChart(data, truckTypeNames):
     return opy.plot(fig, auto_open=False, output_type='div')
         
 
-async def benchmark(request):
-    executionTimes = await getExecutionTimes()
+def benchmark(request):
+    executionTimes = getExecutionTimes()
     timeComplexityPlot = getTimeComplexityPlot(executionTimes)
     
     context = {
@@ -173,7 +173,7 @@ async def benchmark(request):
     return render(request, "solver/benchmark.html", context=context)
 
 
-async def getExecutionTimes():
+def getExecutionTimes():
     executionTimes = []
     numberOfProducts = 100
     

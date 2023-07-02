@@ -1,0 +1,19 @@
+{% extends "./base.html" %}
+
+{% block content %}
+    <div class="col-md-6 offset-md-3" style="margin-top: 50px; margin-bottom: 50px;">
+        <div class="card">
+            <div class="card-header">Description</div>
+            <div class="card-body">
+                <h5 class="card-title">Maximization of truck capacity utilization</h5>
+                <p class="card-text" style="text-align: justify;">Our school project, titled "Maximization of Truck Capacity Utilization," delves into solving an important optimization problem related to efficient product transportation. In this project, we focused on maximizing the utilization of different types of trucks, each possessing a specific capacity for carrying products, measured in weight. By employing the powerful optimization library called PulP, we sought to find the most optimal allocation of products to trucks, ensuring that each truck is utilized to its maximum capacity.</p>
+                <p class="card-text" style="text-align: justify;">Our project begins by defining the various types of trucks available, each with its own predetermined number of vehicles. These trucks differ in terms of their carrying capacity, allowing them to transport a specific weight range of products. Additionally, we collected a diverse array of products, each characterized by its unique weight.</p>
+                <p class="card-text" style="text-align: justify;">Using the PulP library, renowned for its effectiveness in solving linear programming and optimization problems, we formulated a mathematical model that addressed the challenge at hand. Our objective was to allocate products to trucks in a way that maximized the overall weight of products transported while considering the constraints imposed by truck capacities.</p>
+                <p class="card-text" style="text-align: justify;">Through an iterative process, we leveraged PulP's optimization capabilities to find the most efficient distribution of products across the available trucks. By carefully formulating the problem and defining the necessary constraints, PulP was able to determine the optimal allocation strategy that maximized the utilization of truck capacities.</p>
+                <p class="card-text" style="text-align: justify;">Our project showcases the significance of optimization techniques in real-world scenarios, such as logistics and supply chain management. By maximizing truck capacity utilization, we aimed to reduce the number of trips required, minimize transportation costs, and ultimately enhance the overall efficiency of the product transportation process.</p>
+                <p class="card-text" style="text-align: justify;">In conclusion, our school project, "Maximization of Truck Capacity Utilization," demonstrates the successful application of PulP, a powerful optimization library, to solve a complex allocation problem. Through careful modeling and iterative optimization, we were able to optimize the allocation of products to trucks, thereby maximizing truck capacity utilization and improving the overall efficiency of product transportation.</p>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,98 @@
+{% extends "./base.html" %}
+
+{% block content %}
+    <div class="col-md-10 offset-md-1" style="margin-top: 50px; margin-bottom: 50px">
+        <h3 style="margin-bottom: 20px;">Input</h3>
+        <div class="row">
+            <div class="col-sm-6 mb-3 mb-sm-0">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title" style="margin-bottom: 20px;">Products</h5>
+                        <form action="{% url 'manual' %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="form_type" value="PRODUCTS">
+                            <div class="form-floating mb-3">
+                                <input type="number" class="form-control" id="floatingInput" name="number_of_products" required>
+                                <label for="floatingInput">Number of products</label>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="margin-bottom: 20px;">SUBMIT</button>
+                        </form>
+                    </div>
+                </div>
+                {% if showInputProducts %}
+                    <div class="card" style="margin-top: 20px;">
+                        <div class="card-body">
+                            <form action="{% url 'manual' %}" method='post'>
+                                {% csrf_token %}
+                                <input type="hidden" name="form_type" value="PRODUCTS_INFORMATION">
+                                {% for productIndex in numberOfProducts %}
+                                    <p>Product number {{ productIndex }}</p>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-floating mb-3">
+                                                <input type="number" class="form-control" id="floatingInput_{{ productIndex }}" name="product_volume_{{ productIndex }}" required>
+                                                <label for="floatingInput_{{ productIndex }}">Volume (m^3)</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-floating mb-3">
+                                                <input type="number" class="form-control" id="floatingInput_{{ productIndex }}" name="product_demand_{{ productIndex }}" required>
+                                                <label for="floatingInput_{{ productIndex }}">Demand (quantity)</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                <button type="submit" class="btn btn-primary" style="margin-bottom: 20px;">SAVE PRODUCTS INFORMATION</button>
+                            </form>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="col-sm-6 mb-3 mb-sm-0">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title" style="margin-bottom: 20px;">Trucks</h5>
+                        <form action="{% url 'manual' %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="form_type" value="TRUCKS">
+                            <div class="form-floating mb-3">
+                                <input type="number" class="form-control" id="floatingInput" name="number_of_truck_types" required>
+                                <label for="floatingInput">Number of truck types</label>
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="margin-bottom: 20px;">SUBMIT</button>
+                        </form>
+                    </div>
+                </div>
+                {% if showInputTruckTypes %}
+                    <div class="card" style="margin-top: 20px;">
+                        <div class="card-body">
+                            <form action="{% url 'manual' %}" method='post'>
+                                {% csrf_token %}
+                                <input type="hidden" name="form_type" value="TRUCKS_INFORMATION">
+                                {% for truckTypeIndex in numberOfTruckTypes %}
+                                    <p>Truck type number {{ truckTypeIndex }}</p>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-floating mb-3">
+                                                <input type="number" class="form-control" id="floatingInput_{{ truckTypeIndex }}" name="truck_capacity_{{ truckTypeIndex }}" required>
+                                                <label for="floatingInput_{{ truckTypeIndex }}">Capacity (m^3)</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-floating mb-3">
+                                                <input type="number" class="form-control" id="floatingInput_{{ truckTypeIndex }}" name="truck_number_per_type_{{ truckTypeIndex }}" required>
+                                                <label for="floatingInput_{{ truckTypeIndex }}">Number of trucks (per type)</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                <button type="submit" class="btn btn-primary" style="margin-bottom: 20px;">SAVE TRUCKS INFORMATION</button>
+                            </form>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <a href="{% url 'result' %}" class="btn btn-secondary" style="margin-top: 30px;">SOLVE</a>
+    </div>
+{% endblock %}

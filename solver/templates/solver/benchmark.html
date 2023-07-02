@@ -1,0 +1,9 @@
+{% extends "./base.html" %}
+
+{% block content %}
+    <div class="col-md-8 offset-md-2" style="margin-top: 50px; margin-bottom: 50px">
+        <div>
+            {{ timeComplexityPlot | safe }}
+        </div>
+    </div>
+{% endblock %}

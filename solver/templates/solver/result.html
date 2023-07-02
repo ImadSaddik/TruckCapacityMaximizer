@@ -1,0 +1,50 @@
+{% extends "./base.html" %}
+
+{% block content %}
+    <div class="col-md-10 offset-md-1" style="margin-top: 50px; margin-bottom: 50px">
+        <h1 style="margin-bottom: 20px;">Solution: {{ status }}</h1>
+        {% if canShowTable %}
+            <h3 style="margin-bottom: 30px">Average fill rate: {{ averageFillRate }}</h3>
+            <div class="row">
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                    <table class="table table-hover table-bordered">
+                        <thead class="table-dark">
+                            <tr>
+                                <th scope="col">Trucks</th>
+                                    {% for i in numberOfProducts %}
+                                        <th scope="col">Product {{ i }}</th>
+                                    {% endfor %}
+                                <th scope="col">Fill rate (%)</th>
+                            </tr>
+                        </thead>
+                        {% for key, value in solution.items %}
+                            <tr>
+                                <td scope="row">{{ key }}</td>
+                                {% for i in value %}
+                                    <td>{{ i }}</td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                    <div>
+                        {{ trucksUsedBarPlot | safe }}
+                    </div>
+                    <div>
+                        {{ truckFillRateBarPlot | safe }}
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="card">
+                <div class="card-header">Explanation</div>
+                    <div class="card-body">
+                        <h5 class="card-title">Why are you getting <strong>Infeasible</strong>? </h5>
+                        <p class="card-text" style="text-align: justify;">If you encounter the "infeasible" status while using the PuLP library to solve an optimization problem, it means that the constraints you have defined cannot be satisfied simultaneously, leading to no feasible solution. To address this issue, you can follow a few steps. First, review your model formulation to ensure its accuracy and check for conflicting or overly restrictive constraints. Verify that the variable bounds are appropriate and realistic. Double-check the data and constraints to ensure completeness and accuracy. If necessary, relax constraints to allow for more feasible solutions. Seek assistance from domain experts or colleagues for guidance. By carefully examining your model, adjusting constraints and data, and seeking expert input, you can work towards finding a feasible solution to your optimization problem using PuLP.</p>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

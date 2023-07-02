@@ -22,20 +22,51 @@ To get started with this project, follow these steps:
 ## Usage
 This Django application allows you to interact with the code through a web interface, enabling you to input the number of trucks and products for your specific problem and obtain the optimal solution. If you prefer using the solver in your terminal, navigate to the 'solver' folder and import the `solver.py` file. This file implements the optimization model using PulP. Inside the script, you can easily modify the input data, such as truck capacities and product weights, to experiment with different scenarios.
 
-Here is an example of how to use the solver:
+To learn how to use the Solver class, follow these steps:
+
+1. Navigate to the directory where you copied this repository. In my case, I renamed the copied folder to "optimization." If you have a different folder name, make sure to adjust it in the next step as well.
+2. Execute the following command: `python -m optimization.examples.main`, optimization refers to the name of the folder that contains the whole project
+3. The content of the `main.py` script is displayed below:
+
 
 ```python
-# Example usage code snippet
-from optimization import optimize_truck_utilization
+from ..solver.solver import Solver
+from pulp import *
 
-# Define your input data
-truck_capacities = [100, 150, 200]  # Capacities of the trucks
-product_weights = [50, 75, 100, 125, 150]  # Weights of the products
 
-# Run the optimization
-solution = optimize_truck_utilization(truck_capacities, product_weights)
+# Remove unwanted output from PuLP
+pulp.LpSolverDefault.msg = False
 
-# Print the results
-print("Optimal allocation of products to trucks:")
-for truck, products in solution.items():
-    print(f"Truck {truck}: {products}")
+# Define the problem
+prob = LpProblem("Truck_Loading_Problem", LpMinimize)
+
+# instantiate the solver
+numberOfProducts = 3
+numberOfTruckTypes = 2
+productVolumes = [1.2, 0.3, 0.5]
+productDemandQuantity = [1290, 302, 300]
+truckTypeCapacities = [120, 210]
+numberOfTrucksPerType = [5, 10]
+
+solver = Solver(numberOfProducts=numberOfProducts, 
+                    numberOfTruckTypes=numberOfTruckTypes,
+                    prob=prob,
+                    productVolumes=productVolumes,
+                    productDemandQuantity=productDemandQuantity,
+                    truckTypeCapacities=truckTypeCapacities,
+                    numberOfTrucksPerType=numberOfTrucksPerType
+                )
+
+# Solve the problem
+solution = solver.getSolution()
+
+# Print the status of the solution
+print(f"Status: {LpStatus[solver.prob.status]}")
+
+# Pretify the solution using tabulate
+if solution is not None:
+    solution = solver.pretifySolution(solution)
+
+    # Print the solution
+    print(solution)
+```

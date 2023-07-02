@@ -6,6 +6,7 @@ import plotly.offline as opy
 
 from .solver import Solver
 from pulp import *
+pulp.LpSolverDefault.msg = False
 
 import numpy as np
 import random
@@ -86,7 +87,7 @@ def result(request):
         messages.error(request, "Please fill in all the information")
         return render(request, "solver/manual.html", {})
     
-    prob = LpProblem("Truck Loading Problem", LpMinimize)
+    prob = LpProblem("Truck_Loading_Problem", LpMinimize)
     solver = Solver(numberOfProducts=numberOfProducts, 
                     numberOfTruckTypes=numberOfTruckTypes,
                     prob=prob,
@@ -97,9 +98,9 @@ def result(request):
                 )
     
     solution = solver.getSolution()
-    averageFillRate = getAverageFillRate(solution)
     status = LpStatus[prob.status]
     canShowTable = status == 'Optimal'
+    averageFillRate = getAverageFillRate(solution)
     trucksUsedBarPlot = getBarChart(solution)
     truckFillRateBarPlot = getFillRateBarChart(solution, solver.getTruckTypeNames())
 
@@ -116,6 +117,9 @@ def result(request):
 
 
 def getAverageFillRate(solution):
+    if solution is None:
+        return None
+    
     sumOfFillRate = 0
     usedTrucksCount = 0
     
@@ -126,10 +130,13 @@ def getAverageFillRate(solution):
     return round((sumOfFillRate / usedTrucksCount), 2)
 
 
-def getBarChart(data):
+def getBarChart(solution):
+    if solution is None:
+        return None
+    
     x = ['Used', 'Not used']
-    usedTrucksCount = sum(1 if value[-1] > 0 else 0 for value in data.values())
-    y = [usedTrucksCount, len(data) - usedTrucksCount]
+    usedTrucksCount = sum(1 if value[-1] > 0 else 0 for value in solution.values())
+    y = [usedTrucksCount, len(solution) - usedTrucksCount]
     
     fig = go.Figure(data=go.Bar(x=x, y=y))
     fig.update_layout(
@@ -141,12 +148,15 @@ def getBarChart(data):
     return opy.plot(fig, auto_open=False, output_type='div')
 
 
-def getFillRateBarChart(data, truckTypeNames):
+def getFillRateBarChart(solution, truckTypeNames):
+    if solution is None:
+        return None
+    
     global numberOfTrucksPerType
     x = truckTypeNames
     y = np.zeros(len(truckTypeNames))
     
-    for key, value in data.items():
+    for key, value in solution.items():
         truckTypeName = key.split("_")[0] + "_" + key.split("_")[1]
         truckTypeIndex = x.index(truckTypeName)
         y[truckTypeIndex] += max(value[-1], 0)

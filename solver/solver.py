@@ -47,8 +47,11 @@ class Solver():
         self.prob += (lpSum([y[truckPerType] for truckPerType in self.getTrucksPerTypeNames()]), "number_of_trucks_used")
         self.setConstraints(x=x, y=y)
         self.prob.solve()
-        
-        return self.prepareSolution(x=x)
+
+        status = LpStatus[self.prob.status]
+        canShowTable = status == 'Optimal'
+
+        return self.prepareSolution(x=x) if canShowTable else None
         
     
     def setDecisionVariables(self):
